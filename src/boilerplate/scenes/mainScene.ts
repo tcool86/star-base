@@ -1,31 +1,40 @@
-/**
- * @author       Digitsensitive <digit.sensitivee@gmail.com>
- * @copyright    2018 - 2019 digitsensitive
- * @license      Digitsensitive
- */
+import { socket } from '../game';
+import { player } from '../game';
+import GameInput from '../../player/GameInput';
 
 export class MainScene extends Phaser.Scene {
-  private phaserSprite: Phaser.GameObjects.Sprite;
+	public playerContainer: Phaser.GameObjects.Container;
+	public gamepad: Phaser.Input.Gamepad.Gamepad;
+	constructor() {
+		super({
+			key: "MainScene"
+		});
+	}
 
-  constructor() {
-    super({
-      key: "MainScene"
-    });
-  }
+	preload(): void {
+		this.load.image("green", "./src/boilerplate/assets/green.png");
+		this.load.image("blue", "./src/boilerplate/assets/blue.png");
+		this.load.image("red", "./src/boilerplate/assets/red.png");
+		this.load.image("yellow", "./src/boilerplate/assets/yellow.png");
+	}
 
-  preload(): void {
-    this.load.image("logo", "./src/boilerplate/assets/phaser.png");
-  }
+	create(): void {
+		
+	}
 
-  create(): void {
-    this.phaserSprite = this.add.sprite(400, 100, "logo");
-    this.add.tween({
-      targets: this.phaserSprite,
-      y: 450,
-      duration: 2000,
-      ease: 'Power2',
-      yoyo: true,
-      loop: -1
-    })
-  }
+	update(): void {
+		if (this.playerContainer) {
+			this.gamepad = this.input.gamepad.getPad(0);
+			if (!this.gamepad) {
+				return;
+			}
+			if (this.gamepad.connected) {
+				var horiz = this.gamepad.axes[0].getValue();
+				var vert = this.gamepad.axes[1].getValue();
+
+				this.playerContainer.x += 10 * horiz;
+				this.playerContainer.y += 10 * vert;
+			}
+		}
+	}
 }
