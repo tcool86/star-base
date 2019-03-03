@@ -19,6 +19,7 @@
   "homepage": "https://github.com/tcool86/star-base#readme",
   "devDependencies": {
     "expose-loader": "0.7.5",
+    "nodemon": "^1.18.10",
     "ts-loader": "5.3.3",
     "typescript": "3.3.3",
     "webpack": "4.29.4",
@@ -26,6 +27,10 @@
     "webpack-dev-server": "3.1.14"
   },
   "dependencies": {
-    "phaser": "3.16.2"
+    "debug": "^4.1.1",
+    "express": "^4.16.4",
+    "phaser": "3.10.0",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0"
   }
 }
