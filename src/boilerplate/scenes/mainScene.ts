@@ -1,9 +1,11 @@
 import { socket } from '../game';
 import { player } from '../game';
 import GameInput from '../../player/GameInput';
+import { SocketPlayerUpdateData } from '../../player/Player';
+import Player from '../../player/Player';
 
 export class MainScene extends Phaser.Scene {
-	public playerContainer: Phaser.GameObjects.Container;
+	public players: Player[];
 	public gamepad: Phaser.Input.Gamepad.Gamepad;
 	constructor() {
 		super({
@@ -19,11 +21,13 @@ export class MainScene extends Phaser.Scene {
 	}
 
 	create(): void {
-		
+		this.players = [];
 	}
 
 	update(): void {
-		if (this.playerContainer) {
+		var players = this.players;
+		if (players.length >= 1) {
+			var p1 = players[0];
 			this.gamepad = this.input.gamepad.getPad(0);
 			if (!this.gamepad) {
 				return;
@@ -31,10 +35,13 @@ export class MainScene extends Phaser.Scene {
 			if (this.gamepad.connected) {
 				var horiz = this.gamepad.axes[0].getValue();
 				var vert = this.gamepad.axes[1].getValue();
-
-				this.playerContainer.x += 10 * horiz;
-				this.playerContainer.y += 10 * vert;
+				p1.move(horiz, vert);
 			}
+			socket.emit('playerUpdate', p1.getUpdate());
 		}
+	}
+
+	public updatePlayers(data: SocketPlayerUpdateData): void {
+
 	}
 }

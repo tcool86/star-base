@@ -2,7 +2,9 @@ import "phaser";
 import { MainScene } from "./scenes/mainScene";
 import * as io from 'socket.io-client';
 import Player from "../player/Player";
+import { SocketPlayerUpdateData } from '../player/Player';
 
+// TODO use prod flag to determine host name
 const socket = io('//localhost:3000');
 export { socket };
 
@@ -31,6 +33,10 @@ export class Game extends Phaser.Game {
 	constructor(config: GameConfig) {
 		super(config);
 	}
+
+	public addPlayerToScene(player: Player, scene): void {
+		player.attachToScene(scene);
+	}
 }
 
 // when the page is loaded, create our game instance
@@ -46,21 +52,17 @@ window.addEventListener("load", () => {
 		var userColorInput = document.getElementById('userColor');
 		//@ts-ignore
 		var userColor = userColorInput.value;
-		player = new Player();
-		player.name = userName;
-		player.avatar = userColor;
-		var currentScene = game.scene.scenes[0];
-		var playerContainer = currentScene.add.container(400, 300);
-		var playerSprite = currentScene.add.sprite(0, 0, player.avatar);
-		var nameSprite = currentScene.add.text(0, 50, player.name, {
-			font: "9px Arial",
-			fill: player.avatar,
+		player = new Player({
+			name: userName,
+			avatar: userColor,
 		});
-		nameSprite.setOrigin(0.5, 0.5);
-		playerContainer.add(playerSprite);
-		playerContainer.add(nameSprite);
-		currentScene.playerContainer = playerContainer;
+		var currentScene = game.scene.scenes[0];
+		game.addPlayerToScene(player, currentScene);
 	})
+	socket.on('playerUpdate', (data: SocketPlayerUpdateData) => {
+		var currentScene = game.scene.scenes[0];
+		currentScene.updatePlayers(data);
+	});
 });
 
 export { game };
