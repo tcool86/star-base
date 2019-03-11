@@ -1,8 +1,9 @@
 import { socket } from '../game';
-import { player } from '../game';
+import { user } from '../game';
 import GameInput from '../../player/GameInput';
 import { SocketPlayerUpdateData } from '../../player/Player';
 import Player from '../../player/Player';
+import { includes, flatten } from 'lodash';
 
 export class MainScene extends Phaser.Scene {
 	public players: Player[];
@@ -26,8 +27,12 @@ export class MainScene extends Phaser.Scene {
 
 	update(): void {
 		var players = this.players;
-		if (players.length >= 1) {
-			var p1 = players[0];
+		const count = Object.keys(players).length;
+		if (count >= 1) {
+			var userPlayer = players[user];
+			if (!userPlayer) {
+				return;
+			}
 			this.gamepad = this.input.gamepad.getPad(0);
 			if (!this.gamepad) {
 				return;
@@ -35,13 +40,22 @@ export class MainScene extends Phaser.Scene {
 			if (this.gamepad.connected) {
 				var horiz = this.gamepad.axes[0].getValue();
 				var vert = this.gamepad.axes[1].getValue();
-				p1.move(horiz, vert);
+				userPlayer.move(horiz, vert);
 			}
-			socket.emit('playerUpdate', p1.getUpdate());
+			socket.emit('playerUpdate', userPlayer.getUpdate());
 		}
 	}
 
 	public updatePlayers(data: SocketPlayerUpdateData): void {
+		const players = this.players;
+		if (players.length === 0) {
+			return;
+		}
+		const playerIds = flatten(players, 'id');
+		if (!includes(playerIds, data.id)) {
+			// TODO potential drop-in style adding a player
+			console.warn('player not found!');
+		}
 
 	}
 }

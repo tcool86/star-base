@@ -4,7 +4,13 @@ var server = app.listen(3000, () => {
 });
 
 var io = require('socket.io')(server);
-io.on('connection', function(){ 
-	console.log('connected');
-	/* … */
+io.on('connection', (socket) => {
+	console.log('connected to ' + socket.id);
+	socket.on('playerUpdate', (data) => {
+		socket.emit('playerUpdate', data);
+	});
+	socket.on('playerJoin', (data) => {
+		console.log(`broadcasting new player ${JSON.stringify(data)}`);
+		socket.broadcast.emit('playerJoin', data);
+	});
 });
