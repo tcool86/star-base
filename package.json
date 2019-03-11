@@ -6,7 +6,8 @@
     "dev": "webpack --mode development && webpack-dev-server --open --config webpack.dev.js",
     "socket-dev": "nodemon server/websocket-server.js ",
     "build": "webpack --mode production && webpack-dev-server --open --config webpack.prod.js",
-    "socket": "node server/websocket-server.js "
+    "socket": "node server/websocket-server.js",
+    "start": "node server/index.js"
   },
   "repository": {
     "type": "git",
