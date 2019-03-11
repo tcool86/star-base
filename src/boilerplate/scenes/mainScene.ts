@@ -3,7 +3,7 @@ import { user } from '../game';
 import GameInput from '../../player/GameInput';
 import { SocketPlayerUpdateData } from '../../player/Player';
 import Player from '../../player/Player';
-import { includes, flatten } from 'lodash';
+import { each } from 'lodash';
 
 export class MainScene extends Phaser.Scene {
 	public players: Player[];
@@ -26,8 +26,9 @@ export class MainScene extends Phaser.Scene {
 	}
 
 	update(): void {
-		var players = this.players;
-		const count = Object.keys(players).length;
+		const players = this.players;
+		const playerIds = Object.keys(players);
+		const count = playerIds.length;
 		if (count >= 1) {
 			var userPlayer = players[user];
 			if (!userPlayer) {
@@ -48,14 +49,9 @@ export class MainScene extends Phaser.Scene {
 
 	public updatePlayers(data: SocketPlayerUpdateData): void {
 		const players = this.players;
-		if (players.length === 0) {
-			return;
-		}
-		const playerIds = flatten(players, 'id');
-		if (!includes(playerIds, data.id)) {
-			// TODO potential drop-in style adding a player
-			console.warn('player not found!');
-		}
-
+		const playerIds = Object.keys(players);
+		// ^ use to check other players
+		const updatePlayer = players[data.id];
+		updatePlayer.networkUpdate(data);
 	}
 }

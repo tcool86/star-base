@@ -7,7 +7,7 @@ var io = require('socket.io')(server);
 io.on('connection', (socket) => {
 	console.log('connected to ' + socket.id);
 	socket.on('playerUpdate', (data) => {
-		socket.emit('playerUpdate', data);
+		socket.broadcast.emit('playerUpdate', data);
 	});
 	socket.on('playerJoin', (data) => {
 		console.log(`broadcasting new player ${JSON.stringify(data)}`);

@@ -74,6 +74,7 @@ window.addEventListener("load", () => {
 		const player = new Player({
 			name: data.player.name,
 			avatar: data.player.avatar,
+			id: data.player.id,
 		});
 		game.addPlayerToScene(player, currentScene);
 	});

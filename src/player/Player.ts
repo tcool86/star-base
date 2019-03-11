@@ -3,6 +3,7 @@ import "phaser";
 type PlayerConfig = {
 	name: string;
 	avatar: string;
+	id?: string;
 }
 
 class Player {
@@ -17,7 +18,8 @@ class Player {
 	constructor(config: PlayerConfig) {
 		this.name = config.name;
 		this.avatar = config.avatar;
-		this.id = `${config.name}_${Math.random() * 999999}`;
+		this.id = config.id || `${config.name}_${Math.random() * 999999}`;
+		console.log(this.id);
 
 		// These properties require a scene
 		this.container = null;
@@ -41,6 +43,11 @@ class Player {
 	public move(horiz, vert): void {
 		this.container.x += 10 * horiz;
 		this.container.y += 10 * vert;
+	}
+
+	public networkUpdate(data): void {
+		this.container.x = data.x;
+		this.container.y = data.y;
 	}
 
 	public getUpdate(): SocketPlayerUpdateData {
