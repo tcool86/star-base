@@ -2,13 +2,17 @@
   "name": "star-base",
   "version": "0.0.1",
   "description": "Capture point style arcade game built in Phaser 3",
+  "engines": {
+    "npm": "5.6.0",
+    "node": "8.9.4"
+  },
   "scripts": {
     "dev": "webpack --mode development && webpack-dev-server --open --config webpack.dev.js",
     "socket-dev": "nodemon server/websocket-server.js ",
     "build": "webpack --mode production && webpack-dev-server --open --config webpack.prod.js",
     "socket": "node server/websocket-server.js",
     "start": "node index.js",
-    "heroku-postbuild": "webpack -p"
+    "heroku-postbuild": "npm run build"
   },
   "repository": {
     "type": "git",
