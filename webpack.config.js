@@ -1,6 +1,7 @@
 var path = require('path');
 var pathToPhaser = path.join(__dirname, '/node_modules/phaser/');
 var phaser = path.join(pathToPhaser, 'dist/phaser.js');
+const port = process.env.PORT || 8080;
 
 module.exports = {
   entry: './src/boilerplate/game.ts',
@@ -18,7 +19,7 @@ module.exports = {
     contentBase: path.resolve(__dirname, './'),
     publicPath: '/dist/',
     host: '127.0.0.1',
-    port: 8080,
+    port: port,
     open: true
   },
   resolve: {
