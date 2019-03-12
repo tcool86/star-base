@@ -7,7 +7,7 @@ const port = process.env.PORT;
 module.exports = {
   entry: './src/boilerplate/game.ts',
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'dist/'),
     filename: 'bundle.js',
   },
   module: {
@@ -18,7 +18,7 @@ module.exports = {
   },
   plugins: [
 	new CopyPlugin([
-		{ from: './styles/css', to: './public/styles/css' },
+		{ from: './styles/css', to: './styles/css' },
 		{ from: './index.html', to: './' },
 		// { from: 'other', to: 'public' },
 	]),
