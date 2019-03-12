@@ -7,7 +7,7 @@
     "node": "8.9.4"
   },
   "scripts": {
-    "dev": "webpack --mode development && webpack-dev-server --open --config webpack.dev.js",
+    "dev": "webpack-dev-server --open --config webpack.dev.js",
     "socket-dev": "nodemon server/websocket-server.js ",
     "build": "webpack --mode production --config webpack.prod.js",
     "socket": "node server/websocket-server.js",
@@ -26,6 +26,8 @@
   },
   "homepage": "https://github.com/tcool86/star-base#readme",
   "devDependencies": {
+    "copy-webpack-plugin": "^5.0.1",
+    "css-loader": "^2.1.1",
     "expose-loader": "0.7.5",
     "nodemon": "^1.18.10",
     "ts-loader": "5.3.3",

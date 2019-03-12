@@ -1,6 +1,7 @@
 var path = require('path');
 var pathToPhaser = path.join(__dirname, '/node_modules/phaser/');
 var phaser = path.join(pathToPhaser, 'dist/phaser.js');
+const CopyPlugin = require('copy-webpack-plugin');
 const port = process.env.PORT;
 
 module.exports = {
@@ -11,10 +12,17 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: /\.ts$/, loader: 'ts-loader', exclude: '/node_modules/' },
-      { test: /phaser\.js$/, loader: 'expose-loader?Phaser' }
-    ]
+		{ test: /\.ts$/, loader: 'ts-loader', exclude: '/node_modules/' },
+		{ test: /phaser\.js$/, loader: 'expose-loader?Phaser' },
+	]
   },
+  plugins: [
+	new CopyPlugin([
+		{ from: './styles/css', to: './public/styles/css' },
+		{ from: './index.html', to: './' },
+		// { from: 'other', to: 'public' },
+	]),
+  ],
   resolve: {
     extensions: ['.ts', '.js'],
     alias: {
