@@ -11,7 +11,7 @@
     "socket-dev": "nodemon server/websocket-server.js ",
     "build": "webpack --mode production --config webpack.prod.js",
     "socket": "node server/websocket-server.js",
-    "start": "node index.js",
+    "start": "node index.js && npm run socket",
     "heroku-postbuild": "npm run build"
   },
   "repository": {

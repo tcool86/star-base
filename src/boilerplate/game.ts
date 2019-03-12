@@ -4,8 +4,7 @@ import * as io from 'socket.io-client';
 import Player from "../player/Player";
 import { SocketPlayerUpdateData, SocketPlayerJoinData } from '../player/Player';
 
-// TODO use prod flag to determine host name
-const socket = io('//localhost:3000');
+const socket = io(`//${location.hostname}:3000`);
 export { socket };
 
 const config: GameConfig = {

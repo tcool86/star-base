@@ -20,7 +20,6 @@ module.exports = {
 	new CopyPlugin([
 		{ from: './styles/css', to: './styles/css' },
 		{ from: './index.html', to: './' },
-		// { from: 'other', to: 'public' },
 	]),
   ],
   resolve: {
