@@ -4,8 +4,13 @@ import * as io from 'socket.io-client';
 import Player from "../player/Player";
 import { SocketPlayerUpdateData, SocketPlayerJoinData } from '../player/Player';
 
-// TODO use prod flag to determine host name
-const socket = io('//localhost:3000');
+let socket;
+if (location.hostname === '127.0.0.1') {
+	socket = io(`//${location.hostname}:3000`);
+} else {
+	socket = io(`//star-base-net.herokuapp.com`);
+}
+
 export { socket };
 
 const config: GameConfig = {

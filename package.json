@@ -2,9 +2,17 @@
   "name": "star-base",
   "version": "0.0.1",
   "description": "Capture point style arcade game built in Phaser 3",
+  "engines": {
+    "npm": "5.6.0",
+    "node": "8.9.4"
+  },
   "scripts": {
-    "dev": "webpack --mode development && webpack-dev-server --mode development",
-    "build": "webpack --mode production && webpack-dev-server --mode production"
+    "dev": "webpack-dev-server --open --config webpack.dev.js",
+    "socket-dev": "nodemon server/websocket-server.js ",
+    "build": "webpack --mode production --config webpack.prod.js",
+    "socket": "node server/websocket-server.js",
+    "start": "node index.js && npm run socket",
+    "heroku-postbuild": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -18,13 +26,16 @@
   },
   "homepage": "https://github.com/tcool86/star-base#readme",
   "devDependencies": {
+    "copy-webpack-plugin": "^5.0.1",
+    "css-loader": "^2.1.1",
     "expose-loader": "0.7.5",
     "nodemon": "^1.18.10",
     "ts-loader": "5.3.3",
     "typescript": "3.3.3",
     "webpack": "4.29.4",
     "webpack-cli": "3.2.3",
-    "webpack-dev-server": "3.1.14"
+    "webpack-dev-server": "3.1.14",
+    "webpack-merge": "^4.2.1"
   },
   "dependencies": {
     "debug": "^4.1.1",
