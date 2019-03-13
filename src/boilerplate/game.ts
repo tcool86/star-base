@@ -8,7 +8,7 @@ let socket;
 if (location.hostname === '127.0.0.1') {
 	socket = io(`//${location.hostname}:3000`);
 } else {
-	socket = io(`//star-base-net.herokuapp.com:3000`);
+	socket = io(`//star-base-net.herokuapp.com`);
 }
 
 export { socket };
