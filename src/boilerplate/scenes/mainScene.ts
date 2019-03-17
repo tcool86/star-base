@@ -8,6 +8,7 @@ import { each } from 'lodash';
 export class MainScene extends Phaser.Scene {
 	public players: Player[];
 	public gamepad: Phaser.Input.Gamepad.Gamepad;
+	public cursors: Phaser.Input.Keyboard.CursorKeys;
 	constructor() {
 		super({
 			key: "MainScene"
@@ -23,6 +24,7 @@ export class MainScene extends Phaser.Scene {
 
 	create(): void {
 		this.players = [];
+		this.cursors = this.input.keyboard.createCursorKeys();
 	}
 
 	update(): void {
@@ -36,7 +38,19 @@ export class MainScene extends Phaser.Scene {
 			}
 			this.gamepad = this.input.gamepad.getPad(0);
 			if (!this.gamepad) {
-				return;
+				var horiz = 0;
+				var vert = 0;
+				if (this.cursors.left.isDown) {
+					horiz -= 10;
+				} else if (this.cursors.right.isDown) {
+					horiz += 10;
+				}
+				if (this.cursors.up.isDown) {
+					vert -= 10;
+				} else if (this.cursors.down.isDown) {
+					vert += 10;
+				}
+				userPlayer.move(horiz, vert);
 			}
 			if (this.gamepad.connected) {
 				var horiz = this.gamepad.axes[0].getValue();
