@@ -41,18 +41,18 @@ export class MainScene extends Phaser.Scene {
 				var horiz = 0;
 				var vert = 0;
 				if (this.cursors.left.isDown) {
-					horiz -= 10;
+					horiz -= 1;
 				} else if (this.cursors.right.isDown) {
-					horiz += 10;
+					horiz += 1;
 				}
 				if (this.cursors.up.isDown) {
-					vert -= 10;
+					vert -= 1;
 				} else if (this.cursors.down.isDown) {
-					vert += 10;
+					vert += 1;
 				}
-				userPlayer.move(horiz, vert);
+				userPlayer.move(horiz*0.5, vert*0.5);
 			}
-			if (this.gamepad.connected) {
+			if (this.gamepad && this.gamepad.connected) {
 				var horiz = this.gamepad.axes[0].getValue();
 				var vert = this.gamepad.axes[1].getValue();
 				userPlayer.move(horiz, vert);
