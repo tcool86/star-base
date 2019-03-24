@@ -14,6 +14,7 @@ class Player {
 	isUser: boolean;
 
 	container: Phaser.GameObjects.Container;
+	playerSprite: Phaser.Physics.Arcade.Sprite;
 
 	constructor(config: PlayerConfig) {
 		this.name = config.name;
@@ -26,35 +27,37 @@ class Player {
 	}
 
 	public attachToScene(scene): void {
-		this.container = scene.add.container(400, 300);
-		var playerSprite = scene.add.sprite(0, 0, this.avatar);
+		this.container = scene.add.container(400,300);
+		const playerSprite = scene.physics.add.image(0, 0, this.avatar);
+		playerSprite.setCollideWorldBounds(true);
 		const textColor = (this.isUser) ? 'yellow' : 'cyan';
 		var nameSprite = scene.add.text(0, 50, this.name, {
 			font: "9px Arial",
 			fill: textColor,
 		});
 		nameSprite.setOrigin(0.5, 0.5);
-		this.container.add(playerSprite);
 		this.container.add(nameSprite);
+		this.playerSprite = playerSprite;
 		// TODO change this to a map
 		scene.players[this.id] = this;
 	}
 
 	public move(horiz, vert): void {
-		this.container.x += 10 * horiz;
-		this.container.y += 10 * vert;
+		this.playerSprite.setVelocityX(horiz * 1000);
+		this.playerSprite.setVelocityY(vert * 1000);
+		this.container.setPosition(this.playerSprite.x, this.playerSprite.y);
 	}
 
 	public networkUpdate(data): void {
-		this.container.x = data.x;
-		this.container.y = data.y;
+		this.playerSprite.x = data.x;
+		this.playerSprite.y = data.y;
 	}
 
 	public getUpdate(): SocketPlayerUpdateData {
 		return {
 			id: this.id,
-			x: this.container.x,
-			y: this.container.y,
+			x: this.playerSprite.x,
+			y: this.playerSprite.y,
 			frame: this.currentFrame,
 		};
 	}

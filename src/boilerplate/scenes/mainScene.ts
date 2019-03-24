@@ -9,13 +9,20 @@ export class MainScene extends Phaser.Scene {
 	public players: Player[];
 	public gamepad: Phaser.Input.Gamepad.Gamepad;
 	public cursors: Phaser.Input.Keyboard.CursorKeys;
-	constructor() {
+
+	public loadedCallback: Function;
+
+	static BACKGROUND_LAYER = -1;
+
+	constructor(key) {
 		super({
-			key: "MainScene"
+			key
 		});
+		this.players = [];
 	}
 
 	preload(): void {
+		this.load.image("space-background", "./assets/space-background.jpg");
 		this.load.image("green", "./src/boilerplate/assets/green.png");
 		this.load.image("blue", "./src/boilerplate/assets/blue.png");
 		this.load.image("red", "./src/boilerplate/assets/red.png");
@@ -23,8 +30,22 @@ export class MainScene extends Phaser.Scene {
 	}
 
 	create(): void {
-		this.players = [];
 		this.cursors = this.input.keyboard.createCursorKeys();
+
+		const background = this.add.image(0, 0, 'space-background');
+		background.setOrigin(0.5, 0.5);
+		background.setDisplaySize(1600,1200);
+		background.setDepth(MainScene.BACKGROUND_LAYER);
+		if (this.loadedCallback) {
+			this.loadedCallback();
+			this.ready();
+		}
+	}
+
+	ready(): void {
+		this.cameras.main.setBounds(-800, -600, 800 * 2, 600 * 2);
+		this.physics.world.setBounds(-800, -600, 800 * 2, 600 * 2);
+		this.cameras.main.startFollow(user.playerSprite, true);
 	}
 
 	update(): void {

@@ -22,7 +22,7 @@ const config: GameConfig = {
 	height: 600,
 	type: Phaser.AUTO,
 	parent: "game",
-	scene: MainScene,
+	scene: [],
 	input: {
 		gamepad: true,
 	},
@@ -46,28 +46,34 @@ export class Game extends Phaser.Game {
 	public addPlayerToScene(player: Player, scene): void {
 		player.attachToScene(scene);
 	}
+
+	public startScene(): MainScene {
+		let key = 'MainScene';
+		let scene = new MainScene(key);
+		this.scene.add(key, scene, true);
+		return scene;
+	}
 }
 
 // when the page is loaded, create our game instance
 var game = null;
 var user: Player = null;
-window.addEventListener("load", () => {
-	game = new Game(config);
-	var joinButton = document.getElementById('joinGame');
-	joinButton.addEventListener('click', (event) => {
-		var userNameInput = document.getElementById('userName');
-		//@ts-ignore
-		var userName = userNameInput.value;
-		var userColorInput = document.getElementById('userColor');
-		//@ts-ignore
-		var userColor = userColorInput.value;
-		const player = new Player({
-			name: userName,
-			avatar: userColor,
-		});
-		user = player;
-		player.isUser = true;
-		const currentScene = game.scene.scenes[0];
+
+function addPlayerToGame() {
+	var userNameInput = document.getElementById('userName');
+	//@ts-ignore
+	var userName = userNameInput.value;
+	var userColorInput = document.getElementById('userColor');
+	//@ts-ignore
+	var userColor = userColorInput.value;
+	const player = new Player({
+		name: userName,
+		avatar: userColor,
+	});
+	user = player;
+	player.isUser = true;
+	const currentScene = game.startScene();
+	currentScene.loadedCallback = () => {
 		game.addPlayerToScene(player, currentScene);
 		const networkPlayer =  {
 			player,
@@ -75,7 +81,13 @@ window.addEventListener("load", () => {
 		};
 		socket.emit('playerJoin', networkPlayer);
 		socket.emit('requestPlayers');
-	});
+	}
+}
+
+window.addEventListener("load", () => {
+	game = new Game(config);
+	var joinButton = document.getElementById('joinGame');
+	joinButton.addEventListener('click', addPlayerToGame);
 	socket.on('playerUpdate', (data: SocketPlayerUpdateData) => {
 		const currentScene = game.scene.scenes[0];
 		currentScene.updatePlayers(data);
