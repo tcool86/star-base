@@ -51,6 +51,7 @@ class Player {
 	public networkUpdate(data): void {
 		this.playerSprite.x = data.x;
 		this.playerSprite.y = data.y;
+		this.container.setPosition(this.playerSprite.x, this.playerSprite.y);
 	}
 
 	public getUpdate(): SocketPlayerUpdateData {
