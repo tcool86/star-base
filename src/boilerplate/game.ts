@@ -102,6 +102,7 @@ window.addEventListener("load", () => {
 			client: requesterId,
 		};
 		socket.emit('sendPlayer', data);
+		socket.emit('playerUpdate', user.getUpdate());
 	});
 });
 
