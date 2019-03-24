@@ -72,4 +72,9 @@ export type SocketPlayerJoinData = {
 	team: number,
 };
 
+export type SocketRequestedPlayerData = {
+	joiningPlayer: SocketPlayerJoinData,
+	client: string,
+}
+
 export default Player;

@@ -32,7 +32,7 @@ export class MainScene extends Phaser.Scene {
 		const playerIds = Object.keys(players);
 		const count = playerIds.length;
 		if (count >= 1) {
-			var userPlayer = players[user];
+			var userPlayer = players[user.id];
 			if (!userPlayer) {
 				return;
 			}

@@ -2,7 +2,11 @@ import "phaser";
 import { MainScene } from "./scenes/mainScene";
 import * as io from 'socket.io-client';
 import Player from "../player/Player";
-import { SocketPlayerUpdateData, SocketPlayerJoinData } from '../player/Player';
+import {
+	SocketPlayerUpdateData,
+	SocketPlayerJoinData,
+	SocketRequestedPlayerData
+} from '../player/Player';
 
 let socket;
 if (location.hostname === '127.0.0.1') {
@@ -46,7 +50,7 @@ export class Game extends Phaser.Game {
 
 // when the page is loaded, create our game instance
 var game = null;
-var user = null;
+var user: Player = null;
 window.addEventListener("load", () => {
 	game = new Game(config);
 	var joinButton = document.getElementById('joinGame');
@@ -61,14 +65,16 @@ window.addEventListener("load", () => {
 			name: userName,
 			avatar: userColor,
 		});
-		user = player.id;
+		user = player;
 		player.isUser = true;
 		const currentScene = game.scene.scenes[0];
 		game.addPlayerToScene(player, currentScene);
-		socket.emit('playerJoin', {
+		const networkPlayer =  {
 			player,
 			team: 0,
-		});
+		};
+		socket.emit('playerJoin', networkPlayer);
+		socket.emit('requestPlayers');
 	});
 	socket.on('playerUpdate', (data: SocketPlayerUpdateData) => {
 		const currentScene = game.scene.scenes[0];
@@ -82,6 +88,20 @@ window.addEventListener("load", () => {
 			id: data.player.id,
 		});
 		game.addPlayerToScene(player, currentScene);
+	});
+	socket.on('addPlayer', (requesterId) => {
+		if (requesterId === socket.id) {
+			return;
+		}
+		const join = {
+			player: user,
+			team: 0,
+		}
+		const data: SocketRequestedPlayerData = {
+			joiningPlayer: join,
+			client: requesterId,
+		};
+		socket.emit('sendPlayer', data);
 	});
 });
 
