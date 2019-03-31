@@ -88,12 +88,19 @@ window.addEventListener("load", () => {
 	game = new Game(config);
 	var joinButton = document.getElementById('joinGame');
 	joinButton.addEventListener('click', addPlayerToGame);
+
+	// Testing purposes
+	// @ts-ignore
+	document.getElementById('userName').value = 'Tim';
+	joinButton.click();
+	//
+
 	socket.on('playerUpdate', (data: SocketPlayerUpdateData) => {
-		const currentScene = game.scene.scenes[0];
+		const currentScene = game.scene.getScene('MainScene');
 		currentScene.updatePlayers(data);
 	});
 	socket.on('playerJoin', (data: SocketPlayerJoinData) => {
-		const currentScene = game.scene.scenes[0];
+		const currentScene = game.scene.getScene('MainScene');
 		const player = new Player({
 			name: data.player.name,
 			avatar: data.player.avatar,
