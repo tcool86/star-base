@@ -5,7 +5,6 @@ type PlayerConfig = {
 	avatar: string;
 	id?: string;
 }
-
 class Player {
 	id: string;
 	name: string;
@@ -20,7 +19,6 @@ class Player {
 		this.name = config.name;
 		this.avatar = config.avatar;
 		this.id = config.id || `${config.name}_${Math.random() * 999999}`;
-		console.log(this.id);
 
 		// These properties require a scene
 		this.container = null;

@@ -1,26 +1,69 @@
-import { game } from '../boilerplate/game';
-
 /**
  * TODO support checks, other buttons
  * look at phaser 3 gamepad stuffs
  */
 class GameInput {
-	gamePad: GamepadInputConfig;
-	constructor() {
-		// game.input.gamepad.start();
-		// game.input.onDown.add(this.dump, game);
-		// this.gamePad = game.input.gamepad.pad1;
+	gamepad: Phaser.Input.Gamepad.Gamepad;
+	cursors: Phaser.Input.Keyboard.CursorKeys;
+	keys: Phaser.Input.Keyboard.KeyCodes;
+
+	// This could be abstracted in to class of "input"
+	// i.e. Player Movement, Menu Navigation, etc
+	// for now focus only on moving the player
+	horiz: number;
+	vert: number;
+
+	constructor(input) {
+		this.gamepad = input.gamepad.getPad(0);
+		this.cursors = input.keyboard.createCursorKeys();
+		this.horiz = 0;
+		this.vert = 0;
 	}
 
 	dump() {
-		console.log(this.gamePad.target);
+		console.log(this.gamepad);
 	}
 
-	getInputs() {
-		const gamePad = this.gamePad;
+	getGamepad() {
+		const gamepad = this.gamepad;
+		return gamepad && gamepad.connected;
 	}
-	upPressed() {}
-	downPressed() {}
+
+	verticalMotion() {
+		const keys = this.cursors;
+		const gamepad = this.gamepad;
+		this.vert = 0;
+		if (keys.up.isDown) {
+			this.vert = -0.5;
+		} else if (keys.down.isDown) {
+			this.vert = 0.5;
+		}
+		if (this.getGamepad()) {
+			this.vert = gamepad.axes[1].getValue();
+		}
+		return this.vert;
+	}
+	
+	horizontalMotion() {
+		const keys = this.cursors;
+		const gamepad = this.gamepad;
+		this.horiz = 0;
+		if (keys.left.isDown) {
+			this.horiz = -0.5;
+		} else if (keys.right.isDown) {
+			this.horiz = 0.5;
+		}
+		if (this.getGamepad()) {
+			this.horiz = gamepad.axes[0].getValue();
+		}
+		return this.horiz;
+	}
+
+	update(input) {
+		if (!this.getGamepad()) {
+			this.gamepad = input.gamepad.getPad(0);
+		}
+	}
 }
 
 export default GameInput;
