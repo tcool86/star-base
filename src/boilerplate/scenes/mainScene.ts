@@ -3,10 +3,13 @@ import { user } from '../game';
 import GameInput from '../../player/GameInput';
 import { SocketPlayerUpdateData } from '../../player/Player';
 import Player from '../../player/Player';
+import CaptureBall from '../../objects/CaptureBall';
+import { throttle } from 'lodash';
 
 export class MainScene extends Phaser.Scene {
 	public players: Player[];
 	public gameInput: GameInput;
+	public ball: CaptureBall;
 
 	public loadedCallback: Function;
 
@@ -21,6 +24,7 @@ export class MainScene extends Phaser.Scene {
 
 	preload(): void {
 		this.load.image("space-background", "./assets/space-background.jpg");
+		this.load.image("capture-ball", "./assets/sphere.png");
 		this.load.image("green", "./src/boilerplate/assets/green.png");
 		this.load.image("blue", "./src/boilerplate/assets/blue.png");
 		this.load.image("red", "./src/boilerplate/assets/red.png");
@@ -43,6 +47,13 @@ export class MainScene extends Phaser.Scene {
 		this.cameras.main.setBounds(-800, -600, 800 * 2, 600 * 2);
 		this.physics.world.setBounds(-800, -600, 800 * 2, 600 * 2);
 		this.cameras.main.startFollow(user.playerSprite, true);
+		this.ball = new CaptureBall();
+		this.ball.attachToScene(this);
+		const playerBody = this.players[user.id].playerSprite;
+		this.physics.add.overlap(
+			playerBody,
+			this.ball.ballSprite,
+			this.ball.collisionWithPlayer);
 	}
 
 	update(): void {

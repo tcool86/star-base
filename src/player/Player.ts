@@ -46,10 +46,14 @@ class Player {
 		this.container.setPosition(this.playerSprite.x, this.playerSprite.y);
 	}
 
-	public networkUpdate(data): void {
-		this.playerSprite.x = data.x;
-		this.playerSprite.y = data.y;
-		this.container.setPosition(this.playerSprite.x, this.playerSprite.y);
+	public networkUpdate(data, scene: Phaser.Scene): void {
+		scene.tweens.add({
+			targets: [this.container, this.playerSprite],
+			x: data.x,
+			y: data.y,
+			duration: 16,
+			ease: 'Quint.easeOut',
+		});
 	}
 
 	public getUpdate(): SocketPlayerUpdateData {

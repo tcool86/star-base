@@ -10,7 +10,7 @@ import {
 
 let socket;
 if (location.hostname === '127.0.0.1') {
-	socket = io(`//${location.hostname}:3000`);
+	socket = io(`//localhost:3000`);
 } else {
 	socket = io(`//star-base-net.herokuapp.com`);
 }
