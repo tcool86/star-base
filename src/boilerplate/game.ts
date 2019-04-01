@@ -123,6 +123,12 @@ window.addEventListener("load", () => {
 		socket.emit('sendPlayer', data);
 		socket.emit('playerUpdate', user.getUpdate());
 	});
+	socket.on('removePlayer', (playerId) => {
+		if (user.id !== playerId) {
+			const currentScene = game.scene.getScene('MainScene');
+			currentScene.removePlayer(playerId);
+		}
+	});
 });
 
 export { game };

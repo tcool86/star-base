@@ -60,6 +60,11 @@ class Player {
 			frame: this.currentFrame,
 		};
 	}
+
+	public remove() {
+		this.container.destroy();
+		this.playerSprite.destroy();
+	}
 }
 
 export type SocketPlayerUpdateData = {

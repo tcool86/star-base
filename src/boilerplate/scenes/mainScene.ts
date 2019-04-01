@@ -61,16 +61,24 @@ export class MainScene extends Phaser.Scene {
 			horiz = input.horizontalMotion();
 			vert = input.verticalMotion();
 			userPlayer.move(horiz, vert);
-			socket.emit('playerUpdate', userPlayer.getUpdate());
+			var update = throttle(() => {
+				socket.emit('playerUpdate', userPlayer.getUpdate());
+			}, 8);
+			update();
 			input.update(this.input);
 		}
 	}
 
 	public updatePlayers(data: SocketPlayerUpdateData): void {
 		const players = this.players;
-		const playerIds = Object.keys(players);
-		// ^ use to check other players
 		const updatePlayer = players[data.id];
-		updatePlayer.networkUpdate(data);
+		updatePlayer.networkUpdate(data, this);
+	}
+	
+	public removePlayer(playerId) {
+		const players = this.players;
+		const player = players[playerId];
+		player.remove();
+		delete players[playerId];
 	}
 }
