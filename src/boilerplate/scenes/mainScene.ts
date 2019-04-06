@@ -1,4 +1,4 @@
-import { socket } from '../game';
+import { socket, SocketGameUpdate } from '../game';
 import { user } from '../game';
 import GameInput from '../../player/GameInput';
 import { SocketPlayerUpdateData } from '../../player/Player';
@@ -74,10 +74,17 @@ export class MainScene extends Phaser.Scene {
 			userPlayer.move(horiz, vert);
 			var update = throttle(() => {
 				socket.emit('playerUpdate', userPlayer.getUpdate());
+				socket.emit('updateGame');
 			}, 8);
 			update();
 			input.update(this.input);
 		}
+	}
+
+	public updateGame(data: SocketGameUpdate): void {
+		const players = this.players;
+		this.ball.networkUpdate(data.ball);
+		this.ball.followPlayer(players);
 	}
 
 	public updatePlayers(data: SocketPlayerUpdateData): void {

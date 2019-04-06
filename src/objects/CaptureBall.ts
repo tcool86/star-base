@@ -1,11 +1,15 @@
 import "phaser";
+import { socket } from '../boilerplate/game';
+import Player from "../player/Player";
 
 class CaptureBall {
 	ballSprite: Phaser.Physics.Arcade.Sprite;
 	imageKey: string;
+	owner?: string;
 
 	constructor() {
 		this.imageKey = 'capture-ball';
+		this.owner = null;
 	}
 
 	public attachToScene(scene): void {
@@ -18,8 +22,23 @@ class CaptureBall {
 	}
 
 	public collisionWithPlayer(player, ball) {
-		// ball.setVelocityX(player.body.velocity.x/2);
-		// ball.setVelocityY(player.body.velocity.y/2);
+		const playerData = player.getData('id');
+		socket.emit('ballUpdate', {
+			owner: playerData,
+		});
+	}
+
+	public followPlayer(players) {
+		if (!this.owner) {
+			return;
+		}
+		const player: Player = players[this.owner];
+		this.ballSprite.setX(player.playerSprite.x - 100);
+		this.ballSprite.setY(player.playerSprite.y - 100);
+	}
+
+	public networkUpdate(data) {
+		this.owner = data.owner;
 	}
 }
 

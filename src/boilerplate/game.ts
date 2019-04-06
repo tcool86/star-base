@@ -17,6 +17,14 @@ if (location.hostname === '127.0.0.1') {
 
 export { socket };
 
+export type SocketGameUpdate = {
+	id: string,
+	bases: object,
+	ball: {
+		owner: string,
+	},
+}
+
 const config: GameConfig = {
 	width: 800,
 	height: 600,
@@ -94,7 +102,10 @@ window.addEventListener("load", () => {
 	document.getElementById('userName').value = 'Tim';
 	joinButton.click();
 	//
-
+	socket.on('gameUpdate', (data: SocketGameUpdate) => {
+		const currentScene = game.scene.getScene('MainScene');
+		currentScene.updateGame(data);
+	});
 	socket.on('playerUpdate', (data: SocketPlayerUpdateData) => {
 		const currentScene = game.scene.getScene('MainScene');
 		currentScene.updatePlayers(data);

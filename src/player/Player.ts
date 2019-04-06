@@ -36,7 +36,7 @@ class Player {
 		nameSprite.setOrigin(0.5, 0.5);
 		this.container.add(nameSprite);
 		this.playerSprite = playerSprite;
-		// TODO change this to a map
+		this.playerSprite.setData('id', this.id);
 		scene.players[this.id] = this;
 	}
 
