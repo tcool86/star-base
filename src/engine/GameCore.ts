@@ -27,12 +27,7 @@ class Game extends Phaser.Game {
 		super(config);
 	}
 
-	public addPlayerToScene(playerData: any, scene): void {
-		const player = new Player({
-			name: playerData.name,
-			avatar: playerData.avatar,
-			id: playerData.id,
-		});
+	public addPlayerToScene(player: Player, scene): void {
 		player.attachToScene(scene);
 	}
 

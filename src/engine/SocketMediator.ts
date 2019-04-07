@@ -62,7 +62,12 @@ class SocketMediator {
 			scene.updatePlayers(data);
 		});
 		socket.on('playerJoin', (data: SocketPlayerJoinData) => {
-			game.addPlayerToScene(data, scene);
+			const player = new Player({
+				name: data.player.name,
+				avatar: data.player.avatar,
+				id: data.player.id,
+			});
+			game.addPlayerToScene(player, scene);
 		});
 		socket.on('addPlayer', (requesterId) => {
 			if (requesterId === socket.id) {
