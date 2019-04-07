@@ -88,4 +88,4 @@ export type SocketRequestedPlayerData = {
 	client: string,
 }
 
-export default Player;
+export { Player };

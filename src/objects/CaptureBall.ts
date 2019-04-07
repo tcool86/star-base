@@ -1,6 +1,7 @@
 import "phaser";
 import { socket } from '../boilerplate/game';
-import Player from "../player/Player";
+// TODO use interface rather than player
+import { Player } from "../player/Player";
 
 class CaptureBall {
 	ballSprite: Phaser.Physics.Arcade.Sprite;
@@ -33,6 +34,9 @@ class CaptureBall {
 			return;
 		}
 		const player: Player = players[this.owner];
+		if (!player) {
+			return;
+		}
 		this.ballSprite.setX(player.playerSprite.x - 100);
 		this.ballSprite.setY(player.playerSprite.y - 100);
 	}

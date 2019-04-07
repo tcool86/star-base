@@ -38,6 +38,7 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
+    "@types/socket.io": "^2.1.2",
     "debug": "^4.1.1",
     "express": "^4.16.4",
     "lodash": "^4.17.11",

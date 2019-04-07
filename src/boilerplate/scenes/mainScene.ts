@@ -1,8 +1,8 @@
-import { socket, SocketGameUpdate } from '../game';
-import { user } from '../game';
+import { socket, user } from '../game';
+import { SocketGameUpdate } from '../../engine/GameCore';
 import GameInput from '../../player/GameInput';
 import { SocketPlayerUpdateData } from '../../player/Player';
-import Player from '../../player/Player';
+import { Player } from '../../player/Player';
 import CaptureBall from '../../objects/CaptureBall';
 import { throttle } from 'lodash';
 
@@ -46,10 +46,10 @@ export class MainScene extends Phaser.Scene {
 	ready(): void {
 		this.cameras.main.setBounds(-800, -600, 800 * 2, 600 * 2);
 		this.physics.world.setBounds(-800, -600, 800 * 2, 600 * 2);
-		this.cameras.main.startFollow(user.playerSprite, true);
 		this.ball = new CaptureBall();
 		this.ball.attachToScene(this);
 		const playerBody = this.players[user.id].playerSprite;
+		this.cameras.main.startFollow(playerBody, true);
 		this.physics.add.overlap(
 			playerBody,
 			this.ball.ballSprite,
