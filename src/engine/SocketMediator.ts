@@ -90,6 +90,12 @@ class SocketMediator {
 			}
 		});
 	}
+
+	static updateGameProperty(data: any) {
+		// TODO maybe validate the property here
+		const socket = SocketMediator.getSocket();
+		socket.emit('updateGameProperty', data);
+	}
 }
 
 export default SocketMediator;

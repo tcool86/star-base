@@ -1,7 +1,8 @@
 import "phaser";
-import { socket } from '../boilerplate/game';
+import { game } from '../boilerplate/game';
 // TODO use interface rather than player
 import { Player } from "../player/Player";
+import SocketMediator from '../engine/SocketMediator';
 
 class CaptureBall {
 	ballSprite: Phaser.Physics.Arcade.Sprite;
@@ -24,21 +25,11 @@ class CaptureBall {
 
 	public collisionWithPlayer(player, ball) {
 		const playerData = player.getData('id');
-		socket.emit('ballUpdate', {
-			owner: playerData,
-		});
-	}
-
-	public followPlayer(players) {
-		if (!this.owner) {
-			return;
-		}
-		const player: Player = players[this.owner];
-		if (!player) {
-			return;
-		}
-		this.ballSprite.setX(player.playerSprite.x - 100);
-		this.ballSprite.setY(player.playerSprite.y - 100);
+		SocketMediator.updateGameProperty({
+			ball: {
+				owner: playerData,
+			},
+		})
 	}
 
 	public networkUpdate(data) {

@@ -75,7 +75,7 @@ export class MainScene extends Phaser.Scene {
 			var update = throttle(() => {
 				socket.emit('playerUpdate', userPlayer.getUpdate());
 				socket.emit('updateGame');
-			}, 8);
+			}, 24);
 			update();
 			input.update(this.input);
 		}
@@ -84,7 +84,21 @@ export class MainScene extends Phaser.Scene {
 	public updateGame(data: SocketGameUpdate): void {
 		const players = this.players;
 		this.ball.networkUpdate(data.ball);
-		this.ball.followPlayer(players);
+		this.followPlayer(players);
+	}
+
+	public followPlayer(players) {
+		const ball = this.ball;
+		if (!ball.owner) {
+			return;
+		}
+		const player: Player = players[ball.owner];
+		if (!player) {
+			return;
+		}
+		const body = player.playerSprite.body;
+		const point = body.center;
+		Phaser.Actions.RotateAroundDistance([ball.ballSprite], point, 0.1, 100);
 	}
 
 	public updatePlayers(data: SocketPlayerUpdateData): void {
