@@ -43,11 +43,11 @@ window.addEventListener("load", () => {
 	joinButton.addEventListener('click', startGame);
 
 	// Testing purposes
-	setTimeout(() => {
+	// setTimeout(() => {
 		// @ts-ignore
-		document.getElementById('userName').value = 'Tim';
-		joinButton.click();
-	}, 0);
+		// document.getElementById('userName').value = 'Tim';
+		// joinButton.click();
+	// }, 0);
 });
 
 export { socket };
