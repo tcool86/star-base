@@ -33,17 +33,17 @@
     "ts-loader": "5.3.3",
     "typescript": "3.3.3",
     "webpack": "4.29.4",
-    "webpack-cli": "3.2.3",
-    "webpack-dev-server": "3.1.14",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
-    "@types/socket.io": "^2.1.2",
-    "debug": "^4.1.1",
-    "express": "^4.16.4",
-    "lodash": "^4.17.11",
+    "@types/socket.io": ">=2.1.2",
+    "debug": ">=4.1.1",
+    "express": ">=4.16.4",
+    "lodash": "^4.17.20",
     "phaser": "3.10.0",
-    "socket.io": "^2.2.0",
-    "socket.io-client": "^2.2.0"
+    "socket.io": ">=2.2.0",
+    "socket.io-client": ">=2.2.0"
   }
 }
